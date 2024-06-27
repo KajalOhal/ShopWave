@@ -1,0 +1,105 @@
+{% extends 'ecommerce_app/base.html' %}
+{% load static %}
+{% block title %}Product Detail - {{ product.name }}{% endblock %}
+{% block content %}
+<style>
+    /* Inline CSS for Product Detail Page */
+    .product-detail {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-info {
+        flex: 1;
+        padding: 0 20px;
+    }
+
+    .product-info h2 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .product-info .seller-name {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .product-info .product-description {
+        font-size: 18px;
+        color: #444;
+        margin-bottom: 20px;
+    }
+
+    .product-info .product-price {
+        font-size: 20px;
+        color: #f44336; /* Red color for price */
+        margin-bottom: 20px;
+    }
+
+    .product-info .product-actions {
+        margin-top: 20px;
+    }
+
+    .product-info .product-actions form {
+        display: inline-block;
+    }
+
+    .product-info .product-actions button {
+        padding: 10px 20px;
+        font-size: 18px;
+        color: #fff;
+        background-color: #007bff; /* Blue color for buttons */
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .product-info .product-actions button:hover {
+        background-color: #0056b3; /* Darker shade of blue on hover */
+    }
+</style>
+
+<div class="product-detail">
+    <div class="product-image">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    </div>
+    <div class="product-info">
+        <h2>{{ product.name }}</h2>
+        <p class="seller-name">{{ product.brand.name }}</p>
+        <p class="product-description">{{ product.description }}</p>
+        <p class="product-price">
+            <strong>₹{{ product.price }}</strong>
+            {% if product.discount_price %}
+            <strike>₹{{ product.discount_price }}</strike> <span>({{ product.get_discount_display }} off)</span>
+            {% endif %}
+        </p>
+        <div class="product-actions">
+            <form action="{% url 'add_to_cart' product.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+            </form>
+            <form action="{% url 'buy_now' product.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="buy-now-btn">Buy Now</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

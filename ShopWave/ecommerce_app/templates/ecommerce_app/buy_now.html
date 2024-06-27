@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Now</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        select, input[type="radio"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Buy Now - Product Details</h2>
+        <form action="{% url 'checkout' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <p><strong>Name:</strong> {{ product.name }}</p>
+            <p><strong>Description:</strong> {{ product.description }}</p>
+            <p><strong>Price:</strong> ${{ product.price }}</p>
+
+            <label for="address">Select Delivery Address:</label>
+            <select id="address" name="address">
+                {% for address in addresses %}
+                    <option value="{{ address.id }}">{{ address }}</option>
+                {% endfor %}
+            </select>
+            <p>Or</p>
+            <label for="new_address">Enter New Address:</label>
+            <textarea id="new_address" name="new_address" rows="4" cols="50"></textarea>
+
+            <h3>Payment Options:</h3>
+            <input type="radio" id="cash" name="payment" value="cash">
+            <label for="cash">Cash on Delivery</label><br>
+            <input type="radio" id="upi" name="payment" value="upi">
+            <label for="upi">UPI Payment</label><br>
+            <input type="radio" id="paytm" name="payment" value="paytm">
+            <label for="paytm">PayTM</label><br>
+
+            <button type="submit">Proceed to Checkout</button>
+        </form>
+    </div>
+</body>
+</html>

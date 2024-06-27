@@ -1,0 +1,22 @@
+{% extends 'ecommerce_app/base.html' %}
+{% block title %}Cart{% endblock %}
+{% block content %}
+<h2>Your Cart</h2>
+<form method="post" action="{% url 'update_cart' cart_item.id %}">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+        </tr>
+        {% for cart_item in cart_items %}
+        <tr>
+            <td>{{ cart_item.product.name }}</td>
+            <td>${{ cart_item.product.price }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'checkout' %}">Proceed to Checkout</a>
+</form>
+{% endblock %}

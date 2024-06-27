@@ -1,0 +1,140 @@
+{% extends 'ecommerce_app/base.html' %}
+{% load static %}
+{% block title %}E-Commerce{% endblock %}
+{% block content %}
+<div class="header">
+    <div class="categories-bar">
+    <a href="{% url 'home' %}">
+        <div class="category-icon">
+            <img src="{% static 'images/categoryicon.png' %}" alt="All Categories">
+            <span>All Categories</span>
+        </div>
+    </a>
+    {% for category in categories %}
+    <a href="{% url 'home' %}?category={{ category.id }}">
+        <div class="category-icon">
+            <img src="{{ category.icon.url }}" alt="{{ category.name }}">
+
+            <span>{{ category.name }}</span>
+        </div>
+    </a>
+    {% endfor %}
+    </div>    
+</div>
+
+<div class="main-content">
+    <div class="sidebar">
+        <div class="filter-section">
+            <h3>Filters</h3>
+        </div>
+        
+        <div class="filter-section">
+            <h3>Brand</h3>
+            <form method="get">
+                <ul>
+                    
+                    {% for brand in distinct_brands %}  
+                    <li>
+                        <label>
+                            <input type="checkbox" name="brand" value="{{ brand.id }}">
+                            {{ brand.name }}
+                        </label>
+                    </li>
+                    {% endfor %}  
+                </ul>
+                <button type="submit">Apply</button>
+            </form>
+        </div>
+        
+        <div class="filter-section">
+            <h3>Ratings</h3>
+            <form method="get">
+                <ul>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="rating" value="5">
+                            5 stars 
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="rating" value="4">
+                            4 stars
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="rating" value="3">
+                            3 stars
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="rating" value="2">
+                            2 stars
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="rating" value="1">
+                            1 star
+                        </label>
+                    </li>
+                </ul>
+                <button type="submit">Apply</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="slider">
+            <div class="slider-images">
+                <img src="{% static 'images/slider image 3.jpg' %}" alt="Slider Image 3">
+                <img src="{% static 'images/slider image 4.webp' %}" alt="Slider Image 4">
+                <img src="{% static 'images/sliderimage2.jpg' %}" alt="Slider Image 5">
+            </div>
+        </div>
+        <div class="products">
+            {% for product in products %}
+            <div class="product">
+                <a href="{% url 'product_detail_id' product.id %}">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'images/default_image.jpg' %}" alt="Default Image">
+                    {% endif %}
+                </a>
+                <div class="product-info">
+                    <p class="seller-name">{{ product.brand.name }}</p>
+                    <p class="product-description">{{ product.description }}</p>
+                    <p class="product-price">
+                        <strong>₹{{ product.price }}</strong>
+                        {% if product.discount_price %}
+                        <strike>₹{{ product.discount_price }}</strike> <span>(% off)</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var initialUrl = $('#category-dropdown').val();
+
+        $('#category-dropdown').change(function() {
+            var url = $(this).val();
+
+            if (url === initialUrl) {
+                window.location.href = url; 
+            } else {
+                window.location.href = url; 
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'ecommerce_app/base.html' %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="profile-container">
+    <h2>Profile</h2>
+    <div class="profile-section">
+        <h3>Personal Information</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+    </div>
+    <div class="profile-section">
+        <h3>My Orders</h3>
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+             
+                <tr>
+                    <td>12345</td>
+                    <td>2024-01-15</td>
+                    <td>Shipped</td>
+                    <td>$199.99</td>
+                    <td><a href="#">View</a></td>
+                </tr>
+                <tr>
+                    <td>67890</td>
+                    <td>2024-01-10</td>
+                    <td>Processing</td>
+                    <td>$89.99</td>
+                    <td><a href="#">View</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
